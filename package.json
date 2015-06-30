@@ -1,6 +1,6 @@
 {
   "__template__gist__": "https://gist.github.com/tomchentw/0dc24c30955c1a6c94d4#file-package-json",
-  "name": "gulp-livescript",
+  "name": "gulp-ls",
   "version": "2.3.1",
   "description": "Compile LiveScript to JavaScript for Gulp",
   "main": "lib/index.js",
@@ -26,6 +26,10 @@
     "email": "developer@tomchentw.com",
     "url": "https://github.com/tomchentw"
   },
+  "contributors": [{
+    "name": "Darby Chang",
+    "email": "darby.chang@gmail.com"
+  }],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tomchentw/gulp-livescript/issues"
