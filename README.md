@@ -1,13 +1,46 @@
-# gulp-livescript [![Travis CI][travis-image]][travis-url] [![Quality][codeclimate-image]][codeclimate-url] [![Coverage][codeclimate-coverage-image]][codeclimate-coverage-url] [![Dependencies][gemnasium-image]][gemnasium-url] [![Gitter][gitter-image]][gitter-url]
+# gulp-ls [![Travis CI][travis-image]][travis-url] [![Quality][codeclimate-image]][codeclimate-url] [![Coverage][codeclimate-coverage-image]][codeclimate-coverage-url] [![Dependencies][gemnasium-image]][gemnasium-url] [![Gitter][gitter-image]][gitter-url]
 > Compile LiveScript to JavaScript for Gulp
 
 [![Version][npm-image]][npm-url]
 
 
+## Note
+This is a clone of [`gulp-livescript` by @tomchentw](https://github.com/tomchentw/gulp-livescript). `gulp-ls` is identical to `gulp-livescript` except the response to `.js` files. `gulp-livescript` throws an error when encountering `.js` files; while `gulp-ls` accepts `.js` files by doing nothing (outputing the original file). A typical `gulpfile.ls`
+
+```javascript
+var gulpConcat = require('gulp-concat');
+var gulpLivescript = require('gulp-livescript');
+var streamqueue = require('streamqueue');
+
+gulp.task('js', function(){
+  var js = gulp.src('some/js/files');
+  var ls = gulp.src('some/ls/files').pipe(gulpLivescript({bare: treu}));
+  return streamqueue({objectMode: true})
+    .done(js, ls)
+    .pipe(gulpConcat('app.js'))
+    .pipe(gulp.dest('./public/'));
+});
+```
+
+could be reduced to
+
+```javascript
+var gulpConcat = require('gulp-concat');
+var gulpLS = require('gulp-ls');
+
+gulp.task('js', function(){
+  return gulp.src(['some/js/files','some/ls/files'])
+    .pipe(gulpLS({bare: treu}));
+    .pipe(gulpConcat('app.js'))
+    .pipe(gulp.dest('./public/'));
+});
+```
+
+
 ## Installation
 
 ```sh
-npm i --save gulp-livescript
+npm i --save gulp-ls
 ```
 
 
@@ -15,7 +48,7 @@ npm i --save gulp-livescript
 
 <table>
 <tr> 
-<td>Package</td><td>gulp-livescript</td>
+<td>Package</td><td>gulp-ls</td>
 </tr>
 <tr>
 <td>Description</td>
@@ -44,11 +77,11 @@ npm i --save gulp-livescript
 ## Usage
 
 ```javascript
-var gulpLiveScript = require('gulp-livescript');
+var gulpLS = require('gulp-ls');
 
 gulp.task('ls', function() {
   return gulp.src('./src/*.ls')
-    .pipe(gulpLiveScript({bare: true})
+    .pipe(gulpLS({bare: true})
     .on('error', gutil.log))
     .pipe(gulp.dest('./public/'));
 });
@@ -57,14 +90,14 @@ gulp.task('ls', function() {
 
 ### Error Handling
 
-`gulp-livescript` will [emit an error](https://github.com/tomchentw/gulp-livescript/blob/master/test/main.ls#L45) for cases such as invalid LiveScript syntax.
+`gulp-ls` will [emit an error](https://github.com/tomchentw/gulp-livescript/blob/master/test/main.ls#L45) for cases such as invalid LiveScript syntax.
 
 If you need to exit gulp with non-0 exit code, attatch a lister and throw the error:
 
 ```livescript
 gulp.task 'build' ->
   return gulp.src 'test/fixtures/illegal.ls'
-    .pipe gulp-livescript bare: true
+    .pipe gulp-ls bare: true
     .on 'error' -> throw it
     .pipe gulp.dest '.'
 ```
